@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from SolarPowerPlant.Solar import Solar as s
+from SolarPowePlant.Solar import Solar as s
 
 
 def generarSolucionAleatoria():
@@ -73,31 +73,3 @@ def generarMovimientoAleatorioTabu(sol,nCambio):
         else:
             a += 1
     return generarMovimientoPareja(sol, [a, b], nCambio),[a,b]
-
-
-# s=[]
-# for i in range(24):
-#     s.append(random.randint(-10,10))
-#
-# nCambio=3
-# print(s)
-# print(generarMovimientoAleatorio(s,nCambio,random.random()))
-
-
-# total=0
-
-# 48
-# for i in range(len(s)):
-#     generarMovimiento(s,i,nCambio)
-#     generarMovimiento(s, i, -nCambio)
-#     total+=2
-
-# 552
-# for i in range(len(s)):
-#     for j in range(len(s)):
-#         if i!=j:
-#             generarMovimientoPareja(s,[i,j],3)
-#             # generarMovimientoPareja(s, [i+1, i], 3)
-#             total+=1
-
-# print(total)

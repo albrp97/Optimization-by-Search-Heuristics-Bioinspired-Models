@@ -7,15 +7,19 @@ tam = 24
 
 # precio por hora en kW
 p = [0.26, 0.26, .25, .24, .23, .24, .25, .27, .30, .29, .34, .32, .31, .31, .25, .24, .25, .26, .34, .36, .39, .4, .31, .29]
+# p=[0.29, 0.24, 0.35, 0.2, 0.37, 0.36, 0.37, 0.28, 0.29, 0.2, 0.3, 0.28, 0.24, 0.39, 0.36, 0.24, 0.35, 0.31, 0.31, 0.21, 0.28, 0.24, 0.34, 0.37]
+# radiacion por hora en W * m^2
+r = [0, 0, 0, 0, 0, 0, 0, 0, 100, 313, 500, 661, 786, 419, 865, 230, 239, 715, 634, 468, 285, 96, 0, 0]
+# r=[691, 54, 77, 453, 13, 755, 409, 382, 653, 860, 342, 798, 670, 89, 652, 321, 543, 825, 804, 283, 530, 93, 77, 406]
+
+# P y R pueden leerse de archivos o hacer una pipelines de optimizacion y usarlos como entrada automatizada
 
 def evalua(sol):
-    # Sol va tener 24 elementos (por cada hora) de numeros entre 0 y 10
+    # Sol va tener 24 elementos (por cada hora) de numeros entre -10 y 10
     # estos *10 representan el porcentaje de kw que se van a comprar (positivo) o vender (negativo)
     # La cantidad de compra es lo que cabe en la bateria * sol o lo que se ha generado en el dia si es menos
     # La cantidad de venta es lo almacenado en bateria * sol
 
-    # radiacion por hora en W * m^2
-    r = [0, 0, 0, 0, 0, 0, 0, 0, 100, 313, 500, 661, 786, 419, 865, 230, 239, 715, 634, 468, 285, 96, 0, 0]
 
     # m^2
     area = 1000
@@ -36,7 +40,6 @@ def evalua(sol):
 
     dineroFinal = 0
 
-
     for i in range(tam):
         a = sol[i] / 10
 
@@ -55,11 +58,11 @@ def evalua(sol):
             dineroFinal -= dinero
             bateriaOcupada += cantidadBateria
 
-
     # Los metodos estan hechos para minimizar para el escenario de junio
     # Para que maximice negamos la ganancia para convertirlo en coste
     # Cuando devolvamos las soluciones la negamos de nuevo
     return -dineroFinal
+
 
 def evaluaMostrar(sol):
     # Sol va tener 24 elementos (por cada hora) de numeros entre -10 y 10
@@ -99,14 +102,14 @@ def evaluaMostrar(sol):
             a = -a
             cantidadBateria = bateriaOcupada * a
             dinero = cantidadBateria * p[i]
-            print(f"He vendido {round(cantidadBateria, 2)} kW ({a*100}%) por {p[i]} €/kW\nHe ganado {round(dinero, 2)} €")
+            print(f"He vendido {round(cantidadBateria, 2)} kW ({a * 100}%) por {p[i]} €/kW\nHe ganado {round(dinero, 2)} €")
             dineroFinal += dinero
             bateriaOcupada -= cantidadBateria
         else:
             cantidadBateria = (bateriaCapacidad - bateriaOcupada) * a
             if cantidadBateria > generado[i]: cantidadBateria = generado[i]
             dinero = cantidadBateria * p[i]
-            print(f"He comprado {round(cantidadBateria, 2)} kW ({a*100}%) por {p[i]} €/kW\nHe gastado {round(dinero, 2)} €")
+            print(f"He comprado {round(cantidadBateria, 2)} kW ({a * 100}%) por {p[i]} €/kW\nHe gastado {round(dinero, 2)} €")
             dineroFinal -= dinero
             bateriaOcupada += cantidadBateria
         print(f"Bateria final {round(bateriaOcupada, 2)} kW")

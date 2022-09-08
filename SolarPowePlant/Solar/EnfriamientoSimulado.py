@@ -5,7 +5,7 @@ import time
 import numpy as np
 from matplotlib import pyplot as plt
 
-from SolarPowerPlant.Solar import Solar as s, FuncionesAuxiliares as fa, Greedy
+from SolarPowePlant.Solar import Solar as s, FuncionesAuxiliares as fa, Greedy
 
 
 def temperaturaInicial(mu=0.12, phi=0.15):
@@ -62,16 +62,9 @@ def estudioMuPhi(mu=0.12, phi=0.15):
     return k, h,f
 
 
-def enfriamientoSimulado(semillas=np.random.randint(-999, 999, size=5), nVecinos=24, nCambio=11, maxIteraciones=90, mostrar=True, grafica=True):
+def enfriamientoSimulado(semillas=np.random.randint(-999, 999, size=5), nVecinos=24, nCambio=11, maxIteraciones=100, mostrar=True, grafica=True):
     """
     Devuelve las soluciones, costes y evaluaciones tras ejecutar el algoritmo enfriamiento simulado
-    :param semillas: Semillas que se van a evaluar. Default: 5 semillas aleatorias
-    :param nVecinos: Numero de vecinos a ejecutar en cada ejecucion. Default: 20
-    :param nCambio: Tamaño del cambio al generar un vecino. Default: 2
-    :param maxIteraciones: Iteraciones que se van a ejecutar como maximo. Default: 90
-    :param mostrar: Para mostrar por consola la informacion de la ejecucion
-    :param grafica: Para mostrar la grafica de evolucion del algoritmo
-    :return: Devuelve las soluciones los costes y las evaluaciones ejecutadas
     """
 
     soluciones = []
@@ -168,7 +161,7 @@ def enfriamientoSimulado(semillas=np.random.randint(-999, 999, size=5), nVecinos
     return soluciones, costes, evaluaciones
 
 
-def estudioParametros(semillas, nVecinos=24, nCambio=11, maxIteraciones=90):
+def estudioParametros(semillas, nVecinos=24, nCambio=11, maxIteraciones=150):
     """
     Metodo para comparar parametros
     :param semillas: Semillas a ejecutar
@@ -203,9 +196,6 @@ def estudioParametros(semillas, nVecinos=24, nCambio=11, maxIteraciones=90):
         label = "Numero de Iteraciones Maximo"
     else:
         return
-
-    for i in range(len(costes)):
-        costes[i]= -costes[i]
 
     plt.subplot(1, 2, 1)
     plt.plot(x, costes)

@@ -1,5 +1,5 @@
 import numpy as np
-from BikeStations.funcionesAuxiliares import Estaciones,GreedyAleatoria
+from funcionesAuxiliares import Estaciones,GreedyAleatoria
 import BusquedaAleatoria,BusquedaLocal,EnfriamientoSimulado,BusquedaTabu
 
 # Inicia la lectura de plazas ocupadas inicialmente

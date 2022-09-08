@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from BikeStations.funcionesAuxiliares import Estaciones as e, GreedyAleatoria
+from funcionesAuxiliares import Estaciones as e, GreedyAleatoria
 
 e = e.estaciones()
 

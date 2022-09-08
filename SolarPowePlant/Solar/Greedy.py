@@ -1,5 +1,5 @@
 import statistics
-from SolarPowerPlant.Solar import Solar as s
+from SolarPowePlant.Solar import Solar as s
 
 def greedy(mostrar=False):
     p=s.p

@@ -3,7 +3,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from BikeStations.funcionesAuxiliares import Estaciones as e, GreedyAleatoria
+from funcionesAuxiliares import Estaciones as e, GreedyAleatoria
 
 e = e.estaciones()
 

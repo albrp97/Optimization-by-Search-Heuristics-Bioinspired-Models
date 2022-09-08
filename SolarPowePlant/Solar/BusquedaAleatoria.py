@@ -1,7 +1,7 @@
 import random
 
 import numpy as np
-from SolarPowerPlant.Solar import Solar as s, FuncionesAuxiliares as fa
+from SolarPowePlant.Solar import Solar as s, FuncionesAuxiliares as fa
 
 
 def busquedaAleatoria(semillas=np.random.randint(-999, 999, size=5), mostrar=False):

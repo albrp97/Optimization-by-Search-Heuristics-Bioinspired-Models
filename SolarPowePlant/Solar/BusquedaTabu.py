@@ -4,7 +4,8 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from SolarPowerPlant.Solar import Solar as s, FuncionesAuxiliares as fa
+from SolarPowePlant.Solar import Solar as s, FuncionesAuxiliares as fa
+
 
 def busquedaTabu(semillas=np.random.randint(-999, 999, size=5), nVecinos=20, nCambio=12, divisionFrecuencia=3,
                  nReiniciaciones=4, maxIteraciones=150, mostrar=True, grafica=True):
@@ -51,14 +52,14 @@ def busquedaTabu(semillas=np.random.randint(-999, 999, size=5), nVecinos=20, nCa
         iteracion = 0
 
         x.append(iteracion)
-        y.append(costeActual)
+        y.append(-costeActual)
 
         if mostrar:
             print("\n\n------------------")
             print(f"Semilla: {semilla}")
             print("------------------")
             print("\nInicial")
-            print(f"Solucion: {solActual}\t\tCoste: {costeActual}\n")
+            print(f"Ganancia: {-costeActual}\t\tSolucion: {solActual}\n")
 
         while iteracion < maxIteraciones:
 
@@ -141,32 +142,33 @@ def busquedaTabu(semillas=np.random.randint(-999, 999, size=5), nVecinos=20, nCa
                         print("Reinicializamos desde la mejor solucion")
             iteracion += 1
             x.append(iteracion)
-            y.append(costeActual)
+            y.append(-costeActual)
 
         soluciones.append(solFinal)
-        costes.append(costeFinal)
+        costes.append(-costeFinal)
         evaluaciones.append(evaluacion)
 
         x.append(iteracion)
-        y.append(costeFinal)
+        y.append(-costeFinal)
 
         xs.append(x)
         ys.append(y)
 
         if mostrar:
             print("\nFinal")
-            print(f"Solucion: {np.array(solFinal)}\t\tCoste: {costeFinal}")
+            print(f"Ganancia: {-costeActual}\t\tSolucion: {solActual}")
 
     if grafica:
         for i in range(len(xs)):
             plt.subplot(1, len(xs), i + 1)
             plt.plot(xs[i], ys[i])
             plt.xlabel('Iteracion')
-            plt.ylabel('Coste')
+            plt.ylabel('Ganancia')
             plt.title(f'Evolucion {i}')
         plt.show()
 
     return soluciones, costes, evaluaciones
+
 
 def actualizarMatrizFrecuencia(matrizFrecuencia, sol, divisionFrecuencia):
     """
@@ -178,6 +180,7 @@ def actualizarMatrizFrecuencia(matrizFrecuencia, sol, divisionFrecuencia):
         rango = int(sol[i] / divisionFrecuencia)
         matrizFrecuencia[rango][i] += 1
 
+
 def movimientoTabu(listaTabu, movimiento):
     """
     Comprueba si el movimiento (1 para cada estacion) es tabu
@@ -187,10 +190,12 @@ def movimientoTabu(listaTabu, movimiento):
     else:
         return False
 
+
 def actualizarListaTabu(listaTabu, listaTabuTiempo):
     listaTabuTiempo -= 1
     listaTabu[listaTabuTiempo == 0] = 0
     listaTabuTiempo[listaTabuTiempo < 0] = 0
+
 
 def greedyTabu(matrizFrecuencia):
     """
@@ -220,19 +225,21 @@ def greedyTabu(matrizFrecuencia):
                 break  # Break, algoritmo sacado de los apuntes de la practica
     out = [0] * s.tam
     suma = sum(solGreedy)
-    solGreedy=normalize(solGreedy)
+    solGreedy = normalize(solGreedy)
     for i in range(len(solGreedy)):
-        out[i]=round(solGreedy[i])
+        out[i] = round(solGreedy[i])
     return out
+
 
 def normalize(arr, t_min=-10, t_max=10):
     norm_arr = []
     diff = t_max - t_min
     diff_arr = max(arr) - min(arr)
     for i in arr:
-        temp = (((i - min(arr))*diff)/diff_arr) + t_min
+        temp = (((i - min(arr)) * diff) / diff_arr) + t_min
         norm_arr.append(temp)
     return norm_arr
+
 
 def estudioParametros(semillas, nVecinos=20, nCambio=12, divisionFrecuencia=3, nReiniciaciones=4, maxIteraciones=150):
     costes = []
@@ -280,7 +287,7 @@ def estudioParametros(semillas, nVecinos=20, nCambio=12, divisionFrecuencia=3, n
         return
     plt.subplot(1, 2, 1)
     plt.plot(x, costes)
-    plt.ylabel('Coste')
+    plt.ylabel('Ganancia')
     plt.xlabel(label)
     plt.title("Eficacia")
 

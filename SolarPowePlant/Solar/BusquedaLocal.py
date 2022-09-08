@@ -3,7 +3,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 
-from SolarPowerPlant.Solar import Solar as s, FuncionesAuxiliares as fa
+from SolarPowePlant.Solar import Solar as s, FuncionesAuxiliares as fa
 
 
 def busquedaLocal(semillas=np.random.randint(-999, 999, size=5), nLote=90, nCambio=12, mostrar=True, grafica=True):
@@ -72,6 +72,7 @@ def busquedaLocal(semillas=np.random.randint(-999, 999, size=5), nLote=90, nCamb
             # Comprobamos los vecinos del lote
             while contadorLote < nLote and iteracion < 3000 and permutacion < nPermutaciones:
                 solLote = fa.generarMovimientoPareja(solFinal, permutaciones[permutacion], nCambio)
+                # solLote = fa.generarMovimiento(solFinal, permutaciones[permutacion][0], nCambio)
                 costeLote = s.evalua(solLote)
                 if costeLote < costeAct:
                     solAct = solLote
@@ -118,23 +119,20 @@ def busquedaLocal(semillas=np.random.randint(-999, 999, size=5), nLote=90, nCamb
 def estudioParametros(semillas=np.random.randint(-999, 999, size=5), nLote=90, nCambio=12):
     """
     Metodo para comparar parametros en la Busqueda local
-    :param semillas: Semillas a ejecutar
-    :param nLote: Tamaño de lotes para primer mejor vecino
-    :param nCambio: Tamaño de cambio al generar vecinos
     """
     costes = []
     tiempos = []
     if type(nLote) == list:
         for i in nLote:
             t = time.time()
-            costes.append(-np.array(busquedaLocal(semillas, nLote=i, grafica=False)[1]).mean())
+            costes.append(np.array(busquedaLocal(semillas, nLote=i, grafica=False)[1]).mean())
             tiempos.append((time.time() - t) / len(semillas))
         x = nLote
         label = "Tamaño de lotes"
     elif type(nCambio) == list:
         for i in nCambio:
             t = time.time()
-            costes.append(-np.array(busquedaLocal(semillas, nCambio=i, grafica=False)[1]).mean())
+            costes.append(np.array(busquedaLocal(semillas, nCambio=i, grafica=False)[1]).mean())
             tiempos.append((time.time() - t) / len(semillas))
         x = nCambio
         label = "Tamaño de cambio"
@@ -156,56 +154,3 @@ def estudioParametros(semillas=np.random.randint(-999, 999, size=5), nLote=90, n
     print(f"\nGanancias: {costes}\nTiempos: {tiempos}")
 
     plt.show()
-
-
-def busquedaLocalSolucion(sol, semilla, nLote=20, nCambio=2):
-    """
-    Pasada una solucion ejecuta la busquedaLocal y devuelve la nueva solucion
-    :param sol: Solucion inicial de la que parte
-    :param semilla: Semilla que genera la solucion inicial
-    :param nLote: Tamaño de lote para buscar el primer mejor vecino. Default: 20
-    :param nCambio: Tamaño del cambio al generar un vecino. Default: 2
-    :return: Devuelve nueva solucion, coste y evaluaciones ejecutadas
-    """
-    permutaciones = []
-    for i in range(16):
-        for j in range(16):
-            if i != j:
-                permutaciones.append([i, j])
-    random.seed(semilla)
-    random.shuffle(permutaciones)
-    nPermutaciones = len(permutaciones)
-
-    solAct = np.array(sol)
-    costeAct = e.evalua(solAct)
-
-    solFinal = solAct
-    costeFinal = costeAct
-
-    iteracion = 0
-    permutacion = 0
-
-    # Mientras no se recorran todas las permutaciones (hay mejora) o no se llegue al maximo de iteraciones
-    while iteracion < 3000 and permutacion < nPermutaciones:
-
-        contadorLote = 0
-
-        # Comprobamos los vecinos del lote
-        while contadorLote < nLote and iteracion < 3000 and permutacion < nPermutaciones:
-            solLote = GreedyAleatoria.generadorMovimiento(solFinal, permutaciones[permutacion][0],
-                                                          permutaciones[permutacion][1], nCambio)
-            costeLote = e.evalua(solLote)
-            if costeLote < costeAct:
-                solAct = solLote
-                costeAct = costeLote
-            contadorLote += 1
-            iteracion += 1
-            permutacion += 1
-
-        # Si hay solucion en el lote
-        if costeAct < costeFinal:
-            solFinal = solAct
-            costeFinal = costeAct
-            permutacion = 0
-
-    return solFinal, costeFinal, iteracion
