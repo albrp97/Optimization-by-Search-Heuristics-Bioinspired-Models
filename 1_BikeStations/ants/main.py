@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from Practica3 import SH,SHE,SCH
+from ants import SH,SHE,SCH
 from funcionesAuxiliares import Hormigas
 
 a="a280.tsp"

@@ -4,7 +4,7 @@ import time
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Practica1 import BusquedaLocal
+from metaheuristics import BusquedaLocal
 from funcionesAuxiliares import Estaciones as e, GreedyAleatoria
 
 e = e.estaciones()
